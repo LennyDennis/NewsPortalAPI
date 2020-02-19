@@ -5,6 +5,7 @@ import models.organizationGeneralNews;
 import models.organizationDepartment;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public void addOrganizationGeneralNews(organizationGeneralNews generalNews) {
-        String sql = "INSERT INTO newstable (userId,type,data) values (:newsUserId,:newsType,:newsData) ";
+        String sql = "INSERT INTO news (userId,type,data) values (:newsUserId,:newsType,:newsData) ";
         try(Connection con = sql2o.open()){
             int id = (int) con.createQuery(sql,true)
                     .bind(generalNews)
@@ -33,7 +34,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public void addOrganizationDepartmentsNews(organizationDepartmentNews departmentNews) {
-        String sql =" INSERT INTO newstable (userId,type,content,departmentId) values (:userId,:type,:content,now(),:departmentId) ";
+        String sql =" INSERT INTO news (userId,type,content,departmentId) values (:userId,:type,:content,now(),:departmentId) ";
         try(Connection con = sql2o.open()){
             int id = (int)  con.createQuery(sql,true)
                     .addParameter("userId", departmentNews.getNewsUserId())
@@ -47,7 +48,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public List<organizationGeneralNews> getAllGeneralNews() {
-        String sql = "SELECT * FROM newstable WHERE type=:type";
+        String sql = "SELECT * FROM news WHERE type=:type";
         try(Connection con = sql2o.open()){
             return con.createQuery(sql)
                     .throwOnMappingFailure(false)
@@ -59,7 +60,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public List<organizationDepartmentNews> getAllDepartmentNews() {
-        String sql = "SELECT * FROM newstable WHERE type=:type";
+        String sql = "SELECT * FROM news WHERE type=:type";
         try(Connection con = sql2o.open()){
             return con.createQuery(sql)
                     .addParameter("type",DEPARTMENT_NEWS)
@@ -69,7 +70,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public organizationGeneralNews findGeneralNewsById(int generalNewsId) {
-        String sql = "SELECT * FROM newstable WHERE type=:type and id=:id";
+        String sql = "SELECT * FROM news WHERE type=:type and id=:id";
         try(Connection con = sql2o.open()){
             return con.createQuery(sql)
                     .throwOnMappingFailure(false)
@@ -82,7 +83,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public organizationDepartmentNews findDepartmentNewsById(int departmentNewsId) {
-        String sql = "SELECT * FROM newstable WHERE type=:type and id=:id";
+        String sql = "SELECT * FROM news WHERE type=:type and id=:id";
         try(Connection con = sql2o.open()){
             return con.createQuery(sql)
                     .addParameter("type",DEPARTMENT_NEWS)
@@ -93,7 +94,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public void updateGeneralNews(organizationGeneralNews generalNews, String newsData, int userId) {
-        String sql = "UPDATE newstable SET (userId, content) = (:userId, :content)  where id=:id ";
+        String sql = "UPDATE news SET (userId, content) = (:userId, :content)  where id=:id ";
         try(Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("userId",userId)
@@ -123,8 +124,32 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
     }
 
     @Override
+    public void deleteGeneralNewsById(int newsId) {
+        String sql = "DELETE FROM news WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", newsId)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public void deleteDepartmentNewsById(int newsId) {
+        String sql = "DELETE FROM news WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", newsId)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    @Override
     public void clearGeneralNews() {
-        String sql="DELETE FROM newstable WHERE type = :type";
+        String sql="DELETE FROM news WHERE type = :type";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("type",GENERAL_NEWS)
@@ -134,7 +159,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public void clearDepartmentNews() {
-        String sql="DELETE FROM newstable WHERE type = :type";
+        String sql="DELETE FROM news WHERE type = :type";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("type",DEPARTMENT_NEWS)
@@ -144,7 +169,7 @@ public class Sql2oOrganizationNewsDao implements organizationNewsDao{
 
     @Override
     public void clearAllNews() {
-        String sql="DELETE FROM newstable ";
+        String sql="DELETE FROM news ";
         try(Connection con = sql2o.open()){
             con.createQuery(sql).executeUpdate();
         }

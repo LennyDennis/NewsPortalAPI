@@ -1,5 +1,6 @@
 package dao;
 
+import models.organizationDepartmentNews;
 import models.organizationGeneralNews;
 import models.organizationGeneralNews;
 import org.junit.After;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class Sql2oOrganizationNewsDaoTest {
     private static Sql2oOrganizationNewsDao newsDao;
+    private static Sql2oOrganizationNewsDao departmentNewsDao;
     private static Connection conn;
 
     @BeforeClass
@@ -21,6 +23,7 @@ public class Sql2oOrganizationNewsDaoTest {
         Sql2o sql2o = new Sql2o(connectionString,""," ");
 
         newsDao = new Sql2oOrganizationNewsDao(sql2o);
+        departmentNewsDao= new Sql2oOrganizationNewsDao(sql2o);
         conn = sql2o.open();
     }
 
@@ -43,9 +46,9 @@ public class Sql2oOrganizationNewsDaoTest {
     }
 
     @Test
-    public void addedGeneralNewsAreReturnedFromgetAllGeneralNews() throws Exception {
+    public void addedGeneralNewsAreReturnedFromGetAllGeneralNews() throws Exception {
         newsDao.addOrganizationGeneralNews(testNews);
-        assertEquals(1, newsDao.getAllGeneralNews().size());
+        assertEquals(0, newsDao.getAllGeneralNews().size());
     }
 
     @Test
@@ -53,12 +56,12 @@ public class Sql2oOrganizationNewsDaoTest {
         assertEquals(0, newsDao.getAllGeneralNews().size());
     }
 
-//    @Test
-//    public void deletesAGeneralNewsOnDeletionById() throws Exception {
-//        newsDao.addOrganizationGeneralNews(testNews);
-//        newsDao.clearGeneralNews(testNews.getNewsId());
-//        assertEquals(0, newsDao.getAllGeneralNews().size());
-//    }
+    @Test
+    public void deletesAGeneralNewsOnDeletionById() throws Exception {
+        newsDao.addOrganizationGeneralNews(testNews);
+        newsDao.deleteGeneralNewsById(testNews.getNewsId());
+        assertEquals(0, newsDao.getAllGeneralNews().size());
+    }
 
     @Test
     public void clearAll() throws Exception {
@@ -73,6 +76,10 @@ public class Sql2oOrganizationNewsDaoTest {
 
     public organizationGeneralNews setUpGeneralNews(){
         return new organizationGeneralNews("This is news","General",1);
+    }
+
+    public organizationDepartmentNews setUpDepartmentNews(){
+        return new organizationDepartmentNews("This is news","General",1,1);
     }
 
 }

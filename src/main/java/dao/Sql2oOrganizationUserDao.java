@@ -40,17 +40,17 @@ public class Sql2oOrganizationUserDao implements organizationUserDao {
 
     @Override
     public organizationUser findUserById(int userId) {
-        String sql ="SELECT * FROM users where id = :id ";
+        String sql ="SELECT * FROM users where id = :userId ";
         try(Connection con = sql2o.open()){
             return con.createQuery(sql)
-                    .addParameter("id",userId)
+                    .addParameter("userId",userId)
                     .throwOnMappingFailure(false)
                     .executeAndFetchFirst(organizationUser.class);
         }
     }
 
     @Override
-    public void updateUser(organizationUser user, String userName, String userPosition, String userRole, int userDepartmentId) {
+    public void updateUser(int userId, String userName, String userPosition, String userRole, int userDepartmentId) {
         String sql = "UPDATE users SET  (name,position,role,departmentId) = (:userName,:userPosition,:userRole,:userDepartmentId) where id= :userId ";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
@@ -58,13 +58,13 @@ public class Sql2oOrganizationUserDao implements organizationUserDao {
                     .addParameter("userPosition",userPosition)
                     .addParameter("userRole",userRole)
                     .addParameter("userDepartmentId",userDepartmentId)
-                    .addParameter("userId",user.getUserId())
+                    .addParameter("userId",userId)
                     .executeUpdate();
 
-            user.setUserName(userName);
-            user.setUserPosition(userPosition);
-            user.setUserRole(userRole);
-            user.setUserDepartmentId(userDepartmentId);
+//            user.setUserName(userName);
+//            user.setUserPosition(userPosition);
+//            user.setUserRole(userRole);
+//            user.setUserDepartmentId(userDepartmentId);
         }
     }
 

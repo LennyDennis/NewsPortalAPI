@@ -14,7 +14,7 @@ public interface organizationUserDao {
     organizationUser findUserById(int userId);
 
     //update
-    void updateUser(organizationUser user, String userName, String userPosition, String userRole, int userDepartmentId);
+    void updateUser(int userId, String userName, String userPosition, String userRole, int userDepartmentId);
 
     //delete
     void deleteUserById(int userId);

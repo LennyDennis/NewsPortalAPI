@@ -42,8 +42,8 @@ public class organizationDepartment {
         if (o == null || getClass() != o.getClass()) return false;
         organizationDepartment that = (organizationDepartment) o;
         return departmentId == that.departmentId &&
-                departmentName.equals(that.departmentName) &&
-                departmentDescription.equals(that.departmentDescription);
+                Objects.equals(departmentName, that.departmentName) &&
+                Objects.equals(departmentDescription, that.departmentDescription);
     }
 
     @Override

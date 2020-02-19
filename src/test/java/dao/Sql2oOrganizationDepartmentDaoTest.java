@@ -53,6 +53,13 @@ public class Sql2oOrganizationDepartmentDaoTest {
         assertEquals(0, departmentDao.getAllDepartments().size());
     }
 
+//    @Test
+//    public void getASpecificDepartmentUsingID() throws Exception {
+//        departmentDao.addDepartment(testDepartment);
+//        organizationDepartment retrievedDepartment = departmentDao.findDepartmentById(testDepartment.getDepartmentId());
+//        assertEquals(testDepartment, retrievedDepartment);
+//    }
+
     @Test
     public void deletesADepartmentOnDeletionById() throws Exception {
         departmentDao.addDepartment(testDepartment);

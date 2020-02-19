@@ -21,6 +21,8 @@ public interface organizationNewsDao {
     void updateDepartmentNews(organizationDepartmentNews departmentNews, String newsData, int departmentId, int userId);
 
     //delete
+    void deleteGeneralNewsById(int newsId);
+    void deleteDepartmentNewsById(int newsId);
     void clearGeneralNews();
     void clearDepartmentNews();
     void clearAllNews();

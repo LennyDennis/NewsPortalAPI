@@ -59,17 +59,25 @@ public class Sql2oOrganizationDepartmentDao implements organizationDepartmentDao
     }
 
 //    @Override
-//    public List<organizationUser> getUsersForADepartment(int departmentId) {
-//        return organizationUserDao.getAllUsers().stream()
-//                .filter(user -> user.getUserDepartmentId()==departmentId )
-//                .collect(Collectors.toList());
+//    public  List<organizationUser> getUsersForADepartment(int userDepartmentId){
+//        String sql ="SELECT * FROM users where departmentId = :userDepartmentId ";
+//        try(Connection con = sql2o.open()){
+//            return con.createQuery(sql)
+//                    .addParameter("userDepartmentId",departmentId)
+////                    .throwOnMappingFailure(false)
+//                    .executeAndFetchFirst(organizationUser.class);
+//        }
 //    }
-
+//
 //    @Override
-//    public List<organizationDepartmentNews> getNewsForADepartment(int departmentId) {
-//        return organizationNewsDao.getDepartmentNews().stream()
-//                .filter(department->department.getDepartmentNewsId()==departmentId)
-//                .collect(Collectors.toList());
+//    public  List<organizationDepartmentNews> getNewsForADepartment(int departmentId){
+//        String sql ="SELECT * FROM news where departmentId = :departmentNewsId ";
+//        try(Connection con = sql2o.open()){
+//            return con.createQuery(sql)
+//                    .addParameter("userDepartmentId",departmentId)
+////                    .throwOnMappingFailure(false)
+//                    .executeAndFetchFirst(organizationDepartmentNews.class);
+//        }
 //    }
 
     @Override
