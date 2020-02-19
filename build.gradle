@@ -1,10 +1,15 @@
 plugins {
     id 'groovy'
     id 'java'
+    id 'application'
 }
+
+applicationName ="news-portal"
 
 group 'com.lennydennis.newsportal'
 version '1.0-SNAPSHOT'
+
+mainClassName = 'App'
 
 sourceCompatibility = 1.8
 
