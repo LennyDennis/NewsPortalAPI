@@ -1,6 +1,6 @@
 SET MODE PostgreSQL;
 
-CREATE TABLE IF NOT EXISTS newstable(
+CREATE TABLE IF NOT EXISTS news(
     id int PRIMARY KEY auto_increment,
     data varchar,
     type varchar,
