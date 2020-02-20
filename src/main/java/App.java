@@ -19,8 +19,9 @@ public class App {
         Connection conn;
         Gson gson = new Gson();
 
-        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/database.sql'";
-        Sql2o sql2o = new Sql2o(connectionString,""," ");
+        staticFileLocation("/public");
+        String connectionString = "jdbc:postgresql://localhost:5432/newsportal";   //connect to jadle, not jadle_test! try not to copy paste
+        Sql2o sql2o = new Sql2o(connectionString, "lenny", " ");
 
         departmentDao = new  Sql2oOrganizationDepartmentDao (sql2o);
         userDao = new Sql2oOrganizationUserDao(sql2o);
@@ -76,9 +77,22 @@ public class App {
             return gson.toJson(news);
         });
 
+        post("/department-news/new", "application/json", (req, res) -> {
+            organizationDepartmentNews testDepartmentNews= gson.fromJson(req.body(), organizationDepartmentNews.class);
+            newsDao.addOrganizationGeneralNews(testDepartmentNews);
+            res.status(201);
+            res.type("application/json");
+            return gson.toJson(testDepartmentNews);
+        });
+
         get("/news", "application/json", (req, res) -> {
             res.type("application/json");
             return gson.toJson(newsDao.getAllGeneralNews());
+        });
+
+        get("/department-news", "application/json", (req, res) -> {
+            res.type("application/json");
+            return gson.toJson(departmentNewsDao.getAllDepartmentNews());
         });
 
         get("/news/:id", "application/json", (req, res) -> {
